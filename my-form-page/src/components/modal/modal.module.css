@@ -1,0 +1,6 @@
+.modal {
+    max-width: fit-content;
+}
+.modalButton:hover {
+    opacity: 0.8;
+}
