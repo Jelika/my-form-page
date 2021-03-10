@@ -11,10 +11,6 @@ const Login = () => {
   const onSubmit = (data) => {
     console.log(data);
     setModalIsOpen(true);
-    // loginUser(data).then(() => {
-    //   history.push('/');
-    //   authorize();
-    // });
   };
 
   return (
