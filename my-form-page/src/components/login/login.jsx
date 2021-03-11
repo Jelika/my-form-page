@@ -7,11 +7,13 @@ import MyModal from "../modal/modal"
 
 const Login = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const { register, errors, handleSubmit } = useForm();
+  const { register, errors, handleSubmit, reset } = useForm();
   const onSubmit = (data) => {
     console.log(data);
     setModalIsOpen(true);
   };
+  const setIsOpen = (isOpen) => setModalIsOpen(isOpen);
+  const resetFormValues = () => reset({});
 
   return (
     <>
@@ -52,7 +54,7 @@ const Login = () => {
           </Button>
         </form>
       </div>
-      <MyModal modalIsOpen={modalIsOpen} setModalIsOpen={setModalIsOpen}/>
+      <MyModal modalIsOpen={modalIsOpen} setIsOpen={setIsOpen} resetFormValues={resetFormValues}/>
     </>
   );
 };

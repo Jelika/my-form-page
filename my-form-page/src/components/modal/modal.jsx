@@ -1,11 +1,12 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import { Modal, Button } from 'antd';
 import 'antd/dist/antd.css';
 import styles from './modal.module.css';
 
-const MyModal = ({modalIsOpen,setModalIsOpen}) => {
+const MyModal = ({modalIsOpen,setIsOpen,resetFormValues}) => {
     const handleOk=()=>{
-    setModalIsOpen(false);
+        setIsOpen(false);
+        resetFormValues();
     };
 
     return (
@@ -15,7 +16,7 @@ const MyModal = ({modalIsOpen,setModalIsOpen}) => {
         title="Almost everything is ready"
         centered
         footer={[
-          <Button className={styles.modalButton} type="primary" onClick={handleOk}>
+          <Button key={0} className={styles.modalButton} type="primary" onClick={handleOk}>
           OK
           </Button>,
         ]}
