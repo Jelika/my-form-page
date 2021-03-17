@@ -4,3 +4,6 @@ div.ant-modal-footer, div.ant-modal-body{
 button.ant-modal-close{
   display: none;
 }
+button.ant-btn-dashed{
+  width: 50%;
+}
