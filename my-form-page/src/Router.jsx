@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import  Login from "./components/login/login";
-import NasaInfo from "./components/info/info";
+import WikiInfo from "./components/info/info";
 import MainPage from "./components/main-page/main-page";
 
 const AppRouter = () => {
@@ -13,7 +13,7 @@ const AppRouter = () => {
             <Route path="/main" exact>
                 <MainPage />
             </Route> <Route path="/info" exact>
-                <NasaInfo />
+                <WikiInfo />
             </Route> 
             <Redirect to="/" />
         </Switch>

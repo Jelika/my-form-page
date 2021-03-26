@@ -1,3 +1,3 @@
-import NasaInfo from './login';
+import WikiInfo from './login';
 
-export default NasaInfo;
+export default WikiInfo;

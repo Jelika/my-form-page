@@ -1,53 +1,97 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import "antd/dist/antd.css";
+import { Button } from "antd";
 import { Spin } from "antd";
 import styles from "./info.module.css";
 
-const NasaInfo = () => {
-  const apiKey = "I50BLdzLh1kcpLjm1LSS1O9MYV1loIoM35FhEDEH";
-  const [isLoaded, setIsLoaded] = useState(false);
+const WikiInfo = () => {
+  const [isLoaded, setIsLoaded] = useState(true);
   const [items, setItems] = useState([]);
   const [error, setError] = useState(null);
+  const [searchValue, setSearchValue] = useState("");
 
-  useEffect(() => {
-    fetch(
-      `https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=1000&camera=fhaz&api_key=${apiKey}`
-    )
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          //   const itemsMap = result.photos.map((item) => (
-          //     <div className={styles.infoPageBlock}>
-          //       <img className={styles.roverImg} src={item.img_src} />
-          //     </div>
-          //   ));
+  const handleSearchInputChanges = (e) => {
+    setSearchValue(e.target.value);
+  };
 
-          setItems(result);
+  const resetInputField = () => {
+    setSearchValue("");
+  };
+
+  const searchHandling = (e) => {
+    e.preventDefault();
+    const apiUrl = `https://en.wikipedia.org/w/api.php?action=parse&format=json&page=${searchValue}`;
+    setIsLoaded(false);
+    getContents(apiUrl);
+  };
+
+  const getContents = (url) => {
+    const sourceUrl = url;
+    const corsUrl = "https://cors-anywhere.herokuapp.com/";
+    const apiUrlContest = corsUrl + sourceUrl;
+    getApi(apiUrlContest);
+  };
+
+  const getApi = useCallback(
+    (url) => {
+      fetch(url)
+        .then(function (response) {
+          if (response.ok) {
+            return response.json();
+          }
+          throw new Error("Network response was not ok.");
+        })
+        .then(function (data) {
+          setError(null);
+          console.log(data.parse.text["*"]);
+          setItems(data.parse.text["*"]);
           setIsLoaded(true);
-        },
-        (error) => {
+        })
+        .catch(function (err) {
+          setError('There has been a problem with your fetch operation');
           setIsLoaded(true);
-          setError(error);
-        }
-      );
-  }, []);
+          console.log(
+            `There has been a problem with your fetch operation: ${err.message}`
+          );
+        });
+      resetInputField();
+    },
+    [isLoaded]
+  );
 
   return (
     <>
-      {!isLoaded ? (
+      {!isLoaded && (
         <div className={styles.spinner}>
           <Spin />
         </div>
-      ) : (
-        <div className={styles.infoPageBlock}>
-          <img className={styles.roverImg} src={items.photos[0].img_src} />
-          <h2> Name: {items.photos[0].rover.name}</h2>
-          <h3> Camera: {items.photos[0].camera.full_name}</h3>
-          <p>Launch date: {items.photos[0].rover.launch_date}</p>
-        </div>
       )}
+      <div className={styles.container}>
+        <header>WIKI SEARCH</header>
+        <form onSubmit={searchHandling}>
+          <input
+            className={styles.inputForm}
+            value={searchValue}
+            onChange={handleSearchInputChanges}
+            placeholder="search..."
+            type="text"
+          />
+          <Button
+            className={`${styles.btn} ${styles.btnFilled}`}
+            shape="round"
+            onClick={searchHandling}
+          >
+            search
+          </Button>
+        </form>
+        {error ? (
+          <div className={styles.error}>{error}</div>
+        ) : (
+          <div dangerouslySetInnerHTML={{ __html: items }} />
+        )}
+      </div>
     </>
   );
 };
 
-export default NasaInfo;
+export default WikiInfo;

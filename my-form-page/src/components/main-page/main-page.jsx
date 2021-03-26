@@ -9,7 +9,7 @@ const MainPage = () => {
   return (
     <div className={styles.mainPageBlock}>
       <h1>Welcome!</h1>
-      <h3>Click here to launch your Mars Rover :</h3>
+      <h3>Click here to use alternative wiki search :</h3>
       <div>
         <Link to="/info">
           <Button type="dashed" icon={<RocketTwoTone />} danger>
